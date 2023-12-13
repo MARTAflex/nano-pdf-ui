@@ -27,7 +27,7 @@ export const ToText = (ps) => {
     };
 
     return (
-        <Row>
+        <Row className='bg-light border p-3 mb-3'>
             <Col xs={3}>
                 <h2>to-text</h2>
                 <Button onClick={() => sendRequest()}>

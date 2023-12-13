@@ -37,7 +37,7 @@ export const ChunkToText = (ps) => {
     };
 
     return (
-        <Row className='bg-light border p-3'>
+        <Row className='bg-light border p-3 mb-3'>
             <Col xs={3}>
                 <h2>chunk-to-text</h2>
                 <RequestForm {...formBag} />
