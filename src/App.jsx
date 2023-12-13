@@ -2,13 +2,16 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Container } from 'react-bootstrap';
-import { GetPDFLength } from './components';
+import { CheckIfForm, GetPDFLength } from './components';
 
 function App() {
+
+
     return (
-        <Container>
+        <div className='p-5'>
             <GetPDFLength />
-        </Container>
+            <CheckIfForm />
+        </div>
     );
 }
 
