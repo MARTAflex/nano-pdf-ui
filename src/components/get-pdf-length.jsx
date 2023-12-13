@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Row, Col, Form } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 import testPdfs from '../assets/test-pdfs.json';
@@ -10,7 +10,7 @@ const client = axios.create({
 });
 
 export const GetPDFLength = (ps) => {
-    const [selectedPdf, setSelectedPdf] = useState('to-text');
+    var { selectedPdf } = ps;
     const [responseData, setResponseData] = useState({});
 
     const sendRequest = async () => {
@@ -26,17 +26,12 @@ export const GetPDFLength = (ps) => {
             });
     };
 
-    var formBag = {
-        selectedPdf,
-        setSelectedPdf,
-    }
+    
 
     return (
         <Row>
             <Col xs={3}>
                 <h2>get-pdf-length</h2>
-                <RequestForm {...formBag} />
-
                 <Button onClick={() => sendRequest()}>
                     send request
                 </Button>
@@ -51,23 +46,5 @@ export const GetPDFLength = (ps) => {
                 </div>
             </Col>
         </Row>
-    );
-};
-
-const RequestForm = (ps) => {
-    var { selectedPdf, setSelectedPdf } = ps;
-    return (
-        <Form.Group>
-            <Form.Select
-                value={selectedPdf}
-                onChange={(next) => setSelectedPdf(next.target.value)}
-            >
-                {Object.keys(testPdfs).map((key, i) => (
-                    <option value={key} key={i}>
-                        {key}
-                    </option>
-                ))}
-            </Form.Select>
-        </Form.Group>
     );
 };
