@@ -13,7 +13,7 @@ export const GetPDFLength = (ps) => {
     const [selectedPdf, setSelectedPdf] = useState('to-text');
     const [responseData, setResponseData] = useState({});
 
-    const getPdfLength = async () => {
+    const sendRequest = async () => {
         client
             .post('/get-pdf-length', {
                 pdf: testPdfs[selectedPdf], //pdf is expected to be encoded as base64
@@ -37,7 +37,7 @@ export const GetPDFLength = (ps) => {
                 <h2>get-pdf-length</h2>
                 <RequestForm {...formBag} />
 
-                <Button onClick={() => getPdfLength()}>
+                <Button onClick={() => sendRequest()}>
                     send request
                 </Button>
                 <Button variant='danger' onClick={() => setResponseData({})}>
