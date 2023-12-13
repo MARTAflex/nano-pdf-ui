@@ -2,7 +2,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import testPdfs from './assets/test-pdfs.json';
 import { Form } from 'react-bootstrap';
-import { CheckIfForm, GetPDFLength } from './components';
+import { CheckIfForm, GetPDFLength, ToText } from './components';
 
 function App() {
     const [selectedPdf, setSelectedPdf] = useState('to-text');
@@ -21,6 +21,7 @@ function App() {
             <RequestForm {...formBag} />
             <GetPDFLength {...componentBag} />
             <CheckIfForm {...componentBag} />
+            <ToText {...componentBag} />
         </div>
     );
 }
