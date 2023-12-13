@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 
 import testPdfs from "./assets/test-pdfs.json";
+import ejson from "@cdxoo/tiny-ejson";
 
 const client = axios.create({
     baseURL: "/nano-pdf",
@@ -13,7 +14,7 @@ function App() {
 
     const getPdfLength = async () => {
         client
-            .post("/get-pdf-length",{
+            .post("/to-text",{
                 pdf: testPdfs["to-text"], //pdf is expected to be encoded as base64
             }, )
             .then((response) => {
@@ -30,7 +31,10 @@ function App() {
             <button onClick={() => getPdfLength()}>send request</button>
             <div>
                 <pre>
-                    {JSON.stringify(data)}
+                    { JSON.stringify(
+                        ejson(data),
+                        null, 4
+                    )}
                 </pre>
             </div>
         </div>
