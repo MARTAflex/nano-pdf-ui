@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Row, Col, Form } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -19,17 +19,23 @@ export const FormFill = (ps) => {
 
     const sendRequest = async () => {
         client
-            .post('/form-fill', {
-                pdf: testPdfs[selectedPdf], //pdf is expected to be encoded as base64
-                data: requestData,
-                flatten: true,
-            })
+            .post(
+                '/form-fill',
+                {
+                    pdf: testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                    data: requestData,
+                    flatten: true,
+                },
+                {
+                    responseType: 'blob',
+                }
+            )
             .then((response) => {
                 setResponseData(response?.data);
             })
-            .catch((err) => {
-                console.log(err?.response?.data);
-                setResponseData(err?.response?.data);
+            .catch(async (err) => {
+                //from blob to text
+                setResponseData(await err?.response?.data.text());
             });
     };
 
@@ -38,26 +44,32 @@ export const FormFill = (ps) => {
         setRequestData,
     };
 
+    const blobUrl = useMemo(() => (
+        responseData.type === 'application/pdf'
+        ? URL.createObjectURL(responseData)
+        : null
+    ), [ responseData ]);
+
     return (
         <Row className='bg-light border p-3 mb-3'>
             <Col xs={3}>
                 <h2>form-fill</h2>
                 <RequestForm {...formBag} />
                 <Button onClick={() => sendRequest()}>send request</Button>
-                <Button variant='danger' onClick={() => setResponseData(null)}>
+                <Button variant='danger' onClick={() => setResponseData('')}>
                     x
                 </Button>
             </Col>
             <Col xs={9}>
                 <h3>Response:</h3>
                 <div className='border p-3'>
-                    {responseData?.length < 200 && (
+                    {!blobUrl && (
                         <pre>
                             {JSON.stringify(ejson(responseData), null, 4)}
                         </pre>
                     )}
-                    {responseData?.length > 200 && (
-                        <iframe src={responseData} width='100%' height='100%'/>
+                    {blobUrl && (
+                        <iframe src={blobUrl} width='100%' height='600px' />
                     )}
                 </div>
             </Col>
