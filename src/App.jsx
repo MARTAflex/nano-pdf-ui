@@ -1,14 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Container } from "react-bootstrap";
-import { GetPDFLength } from "./components";
-
-
+import { Container } from 'react-bootstrap';
+import { GetPDFLength } from './components';
 
 function App() {
-    
-
     return (
         <Container>
             <GetPDFLength />
