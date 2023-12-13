@@ -26,22 +26,20 @@ export const GetPDFLength = (ps) => {
             });
     };
 
-    
+    var formBag = {
+        selectedPdf,
+        setSelectedPdf,
+    }
+
     return (
         <Row>
             <Col xs={3}>
                 <h2>get-pdf-length</h2>
-                <Form.Group>
-                    <Form.Select
-                        value={selectedPdf}
-                        onChange={ (next) => setSelectedPdf(next.target.value)}
-                        >
-                        { Object.keys(testPdfs).map( (key,i) => (
-                            <option value={key} key={i}>{key}</option>
-                            ))}
-                    </Form.Select>
-                </Form.Group>
-                <Button onClick={() => getPdfLength()}>send request</Button>
+                <RequestForm {...formBag} />
+
+                <Button onClick={() => getPdfLength()}>
+                    send request
+                </Button>
                 <Button variant='danger' onClick={() => setResponseData({})}>
                     x
                 </Button>
@@ -53,5 +51,23 @@ export const GetPDFLength = (ps) => {
                 </div>
             </Col>
         </Row>
+    );
+};
+
+const RequestForm = (ps) => {
+    var { selectedPdf, setSelectedPdf } = ps;
+    return (
+        <Form.Group>
+            <Form.Select
+                value={selectedPdf}
+                onChange={(next) => setSelectedPdf(next.target.value)}
+            >
+                {Object.keys(testPdfs).map((key, i) => (
+                    <option value={key} key={i}>
+                        {key}
+                    </option>
+                ))}
+            </Form.Select>
+        </Form.Group>
     );
 };
