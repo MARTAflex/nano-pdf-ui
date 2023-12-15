@@ -37,7 +37,7 @@ export const CheckIfForm = (ps) => {
                     x
                 </Button>
             </Col>
-            <Col>
+            <Col xs={9}>
                 <h3>Response:</h3>
                 <div className='bg-light border p-3'>
                     <pre>{JSON.stringify(ejson(responseData), null, 4)}</pre>
