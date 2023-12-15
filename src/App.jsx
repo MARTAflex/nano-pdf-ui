@@ -9,6 +9,7 @@ import {
     GetPDFLength,
     ToText,
     DrawRectangles,
+    GetPageDimensions,
 } from './components';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <ToText {...componentBag} />
             <ChunkToText {...componentBag} />
             <FormFill {...componentBag} />
+            <GetPageDimensions {...componentBag} />
             <DrawRectangles {...componentBag} />
         </div>
     );
