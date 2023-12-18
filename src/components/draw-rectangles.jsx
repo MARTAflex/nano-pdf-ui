@@ -14,10 +14,10 @@ export const DrawRectangles = (ps) => {
     const [responseData, setResponseData] = useState('');
     const [requestData, setRequestData] = useState({
         rect1: {
-            x: Math.floor(Math.random() * (300 - 40 + 1) + 40),
-            y: Math.floor(Math.random() * (400 - 200 + 1) + 200),
-            width: Math.floor(Math.random() * (300 - 200 + 1) + 200),
-            height: Math.floor(Math.random() * (90 - 40 + 1) + 40),
+            x: 110,
+            y: 60,
+            width: 125,
+            height: 30,
             color: 'green',
         },
     });
@@ -90,14 +90,14 @@ const RequestForm = (ps) => {
     var keys = Object.keys(requestData);
 
     const addNewRect = () => {
-        var newKey = `rect${keys.length + 1}`;
+        var newKey = `foo${keys.length + 1}`;
         setRequestData((prev) => ({
             ...prev,
             [newKey]: {
-                x: Math.floor(Math.random() * (300 - 40 + 1) + 40),
-                y: Math.floor(Math.random() * (400 - 200 + 1) + 200),
+                x: Math.floor(Math.random() * (50 - 40 + 1) + 40),
+                y: Math.floor(Math.random() * (100 - 150 + 1) + 150),
                 width: Math.floor(Math.random() * (300 - 200 + 1) + 200),
-                height: Math.floor(Math.random() * (90 - 40 + 1) + 40),
+                height: Math.floor(Math.random() * (50 - 30 + 1) + 30),
                 color: 'green',
             },
         }));
