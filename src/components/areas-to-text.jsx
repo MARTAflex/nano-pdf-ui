@@ -10,7 +10,7 @@ const client = axios.create({
 });
 
 export const AreasToText = (ps) => {
-    var { selectedPdf } = ps;
+    var { selectedPdf, uploadedPdf } = ps;
     const [responseData, setResponseData] = useState({});
     const [requestData, setRequestData] = useState({
         firstname: {
@@ -24,7 +24,7 @@ export const AreasToText = (ps) => {
     const sendRequest = async () => {
         client
             .post('/areas-to-text', {
-                pdf: testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
                 data: requestData,
             })
             .then((response) => {

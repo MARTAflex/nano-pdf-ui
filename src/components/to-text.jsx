@@ -10,13 +10,13 @@ const client = axios.create({
 });
 
 export const ToText = (ps) => {
-    var { selectedPdf } = ps;
+    var { selectedPdf, uploadedPdf } = ps;
     const [responseData, setResponseData] = useState({});
 
     const sendRequest = async () => {
         client
             .post('/to-text', {
-                pdf: testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
             })
             .then((response) => {
                 setResponseData(response?.data);

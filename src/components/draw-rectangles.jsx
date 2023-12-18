@@ -10,7 +10,7 @@ const client = axios.create({
 });
 
 export const DrawRectangles = (ps) => {
-    var { selectedPdf } = ps;
+    var { selectedPdf, uploadedPdf } = ps;
     const [responseData, setResponseData] = useState('');
     const [requestData, setRequestData] = useState({
         rect1: {
@@ -27,7 +27,7 @@ export const DrawRectangles = (ps) => {
             .post(
                 '/draw-rectangles',
                 {
-                    pdf: testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                    pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
                     data: requestData,
                     flatten: true,
                 },

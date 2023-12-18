@@ -10,7 +10,7 @@ const client = axios.create({
 });
 
 export const ChunkToText = (ps) => {
-    var { selectedPdf } = ps;
+    var { selectedPdf, uploadedPdf } = ps;
     const [responseData, setResponseData] = useState({});
     const [requestData, setRequestData] = useState({
         chunkSize: 1,
@@ -20,7 +20,7 @@ export const ChunkToText = (ps) => {
     const sendRequest = async () => {
         client
             .post('/chunk-to-text', {
-                pdf: testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
                 data: requestData,
             })
             .then((response) => {
