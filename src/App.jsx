@@ -10,6 +10,7 @@ import {
     ToText,
     DrawRectangles,
     GetPageDimensions,
+    AreasToText,
 } from './components';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <FormFill {...componentBag} />
             <GetPageDimensions {...componentBag} />
             <DrawRectangles {...componentBag} />
+            <AreasToText {...componentBag} />
         </div>
     );
 }

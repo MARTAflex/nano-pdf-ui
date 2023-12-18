@@ -5,3 +5,4 @@ export * from './chunk-to-text';
 export * from './form-fill';
 export * from './draw-rectangles';
 export * from './get-page-dimensions';
+export * from './areas-to-text';
