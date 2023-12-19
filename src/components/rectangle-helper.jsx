@@ -11,7 +11,7 @@ const client = axios.create({
 
 export const RectangleHelper = (ps) => {
     var { selectedPdf, uploadedPdf } = ps;
-    const [responseData, setResponseData] = useState('');
+    const [responseData, setResponseData] = useState(null);
     const [requestData, setRequestData] = useState({});
 
     const sendRequest = async () => {
@@ -35,24 +35,10 @@ export const RectangleHelper = (ps) => {
             });
     };
 
-    var formBag = {
-        requestData,
-        setRequestData,
-    };
-
-    const blobUrl = useMemo(
-        () =>
-            responseData.type === 'application/pdf'
-                ? URL.createObjectURL(responseData)
-                : null,
-        [responseData]
-    );
-
     var rectanglesBag = {
-        ...(responseData && {
-            width: responseData[0][2] || 50,
-            height: responseData[0][3] || 50,
-        }),
+        width: responseData?.dimensions[0][2] || 50,
+        height: responseData?.dimensions[0][3] || 50,
+        backgroundImage: responseData?.firstPageImageBase64,
     };
 
     return (
@@ -82,7 +68,7 @@ export const RectangleHelper = (ps) => {
     );
 };
 
-const RectangleDrawing = ({ height, width }) => {
+const RectangleDrawing = ({ height, width, backgroundImage }) => {
     const canvasRef = useRef(null);
     const [drawing, setDrawing] = useState(false);
     const [rectangle, setRectangle] = useState({
@@ -140,7 +126,7 @@ const RectangleDrawing = ({ height, width }) => {
                 width,
                 height,
             };
-            
+
             //if rectangle was drawn in negativ directions we need to translate that for consistency
             if (rectangle.width < 0) {
                 rectangle.width *= -1;
@@ -153,10 +139,11 @@ const RectangleDrawing = ({ height, width }) => {
             setRectangle(rectangle);
         }
     };
-    
+
     return (
         <>
-            {`x: ${rectangle.x} y: ${rectangle.y} width: ${rectangle.width} height: ${rectangle.height}`}
+            {`x: ${rectangle.x}   y: ${rectangle.y}  width: ${rectangle.width}  height: ${rectangle.height}`}
+            <br />
             <canvas
                 ref={canvasRef}
                 onMouseDown={handleMouseDown}
@@ -164,7 +151,10 @@ const RectangleDrawing = ({ height, width }) => {
                 onMouseUp={handleMouseUp}
                 width={width}
                 height={height}
-                style={{ border: '1px solid black' }}
+                style={{
+                    border: '1px solid black',
+                    backgroundImage: `url(data:image/png;base64,${backgroundImage})`,
+                }}
             />
         </>
     );
