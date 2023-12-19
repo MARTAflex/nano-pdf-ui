@@ -58,7 +58,7 @@ const RequestForm = (ps) => {
         if (selectedFile.length > 0) {
             // Select the very first file from list
             let fileToLoad = selectedFile[0];
-            console.log(fileToLoad);
+            
             fileName = fileToLoad.name;
             // FileReader function for read the file.
             let fileReader = new FileReader();
