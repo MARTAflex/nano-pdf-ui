@@ -11,6 +11,7 @@ import {
     DrawRectangles,
     GetPageDimensions,
     AreasToText,
+    RectangleHelper,
 } from './components';
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
         selectedPdf,
         uploadedPdf,
     };
-
+    
     return (
         <div className='p-5'>
             <RequestForm {...formBag} />
@@ -40,6 +41,7 @@ function App() {
             <GetPageDimensions {...componentBag} />
             <DrawRectangles {...componentBag} />
             <AreasToText {...componentBag} />
+            <RectangleHelper {...componentBag} />
         </div>
     );
 }
@@ -73,7 +75,7 @@ const RequestForm = (ps) => {
             fileReader.readAsDataURL(fileToLoad);
         }
     };
-    
+
     return (
         <div className='mb-5'>
             <Form.Group>
