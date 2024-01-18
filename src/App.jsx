@@ -12,6 +12,7 @@ import {
     GetPageDimensions,
     AreasToText,
     RectangleHelper,
+    GroupPages,
 } from './components';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
             <ToText {...componentBag} />
             <ChunkToText {...componentBag} />
             <FormFill {...componentBag} />
+            <GroupPages {...componentBag} />
             <GetPageDimensions {...componentBag} />
             <DrawRectangles {...componentBag} />
             <AreasToText {...componentBag} />

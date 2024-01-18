@@ -7,3 +7,4 @@ export * from './draw-rectangles';
 export * from './get-page-dimensions';
 export * from './areas-to-text';
 export * from './rectangle-helper';
+export * from './group-pages';
