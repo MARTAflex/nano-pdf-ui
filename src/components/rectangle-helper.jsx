@@ -11,7 +11,8 @@ const client = axios.create({
 
 export const RectangleHelper = (ps) => {
     var { selectedPdf, uploadedPdf } = ps;
-    const [responseData, setResponseData] = useState(null);
+    const [responseDataDimensions, setResponseDataDimensions] = useState(null);
+    const [responseDataFirstPageImage, setResponseDataFirstPageImage] = useState(null);
     const [requestData, setRequestData] = useState({});
 
     const sendRequest = async () => {
@@ -27,18 +28,36 @@ export const RectangleHelper = (ps) => {
                 // }
             )
             .then((response) => {
-                setResponseData(response?.data);
+                setResponseDataDimensions(response?.data);
             })
             .catch(async (err) => {
                 //from blob to text
-                setResponseData(await err?.response?.data.text());
+                setResponseDataDimensions(await err?.response?.data.text());
+            });
+        client
+            .post(
+                '/get-first-page-as-image',
+                {
+                    pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                    data: requestData,
+                }
+                // {
+                //     responseType: 'blob',
+                // }
+            )
+            .then((response) => {
+                setResponseDataFirstPageImage(response?.data);
+            })
+            .catch(async (err) => {
+                //from blob to text
+                setResponseDataFirstPageImage(await err?.response?.data.text());
             });
     };
 
     var rectanglesBag = {
-        width: responseData?.dimensions[0][2] || 50,
-        height: responseData?.dimensions[0][3] || 50,
-        backgroundImage: responseData?.firstPageImageBase64,
+        width: responseDataDimensions?.[0][2] || 50,
+        height: responseDataDimensions?.[0][3] || 50,
+        backgroundImage: responseDataFirstPageImage,
     };
 
     return (
@@ -61,7 +80,7 @@ export const RectangleHelper = (ps) => {
                     {blobUrl && (
                         <iframe src={blobUrl} width='100%' height='600px' />
                     )} */}
-                    {responseData && <RectangleDrawing {...rectanglesBag} />}
+                    {responseDataDimensions && responseDataFirstPageImage && <RectangleDrawing {...rectanglesBag} />}
                 </div>
             </Col>
         </Row>
