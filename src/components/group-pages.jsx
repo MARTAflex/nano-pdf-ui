@@ -13,8 +13,7 @@ export const GroupPages = (ps) => {
     var { selectedPdf, uploadedPdf } = ps;
     const [responseData, setResponseData] = useState('');
     const [requestData, setRequestData] = useState({
-        test: '[0]',
-        test1: '[2]',
+        test: "[0]",
     });
 
     const sendRequest = async () => {
@@ -23,8 +22,10 @@ export const GroupPages = (ps) => {
                 '/group-pages',
                 {
                     pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
-                    data: requestData,
-                }
+                    data: {
+                        test: JSON.parse(requestData.test)
+                    },
+                },
                 // {
                 //     responseType: 'blob',
                 // }
@@ -62,6 +63,12 @@ export const GroupPages = (ps) => {
 
         return result;
     }, [responseData]);
+
+    // const blobUrl = useMemo(() => (
+    //     responseData.type === 'application/pdf'
+    //     ? URL.createObjectURL(responseData)
+    //     : null
+    // ), [ responseData ]);
 
     return (
         <Row className='bg-light border p-3 mb-3'>
@@ -102,7 +109,7 @@ const RequestForm = (ps) => {
                     onChange={(next) =>
                         setRequestData((prev) => ({
                             ...prev,
-                            test: next.target.value,
+                            test: next.target.value, 
                         }))
                     }
                 />
