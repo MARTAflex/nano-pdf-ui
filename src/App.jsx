@@ -13,6 +13,7 @@ import {
     AreasToText,
     RectangleHelper,
     GroupPages,
+    PatternToText,
 } from './components';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
             <GetPageDimensions {...componentBag} />
             <DrawRectangles {...componentBag} />
             <AreasToText {...componentBag} />
+            <PatternToText {...componentBag} />
             <RectangleHelper {...componentBag} />
         </div>
     );
