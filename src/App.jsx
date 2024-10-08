@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import testPdfs from './assets/test-pdfs.json';
-import { Form } from 'react-bootstrap';
+import { Form, Tabs } from 'react-bootstrap';
 import {
     CheckIfForm,
     ChunkToText,
@@ -14,7 +14,9 @@ import {
     RectangleHelper,
     GroupPages,
     PatternToText,
+    GetFormFields,
 } from './components';
+import { Tab } from 'bootstrap';
 
 function App() {
     const [selectedPdf, setSelectedPdf] = useState('to-text');
@@ -35,17 +37,35 @@ function App() {
     return (
         <div className='p-5'>
             <RequestForm {...formBag} />
-            <GetPDFLength {...componentBag} />
-            <CheckIfForm {...componentBag} />
-            <ToText {...componentBag} />
-            <ChunkToText {...componentBag} />
-            <FormFill {...componentBag} />
-            <GroupPages {...componentBag} />
-            <GetPageDimensions {...componentBag} />
-            <DrawRectangles {...componentBag} />
-            <AreasToText {...componentBag} />
-            <PatternToText {...componentBag} />
-            <RectangleHelper {...componentBag} />
+
+            <Tabs
+                defaultActiveKey='meta'
+            >
+                <Tab eventKey='meta' title='Metadata'>
+                    <GetPDFLength {...componentBag} />
+                    <CheckIfForm {...componentBag} />
+                </Tab>
+                <Tab eventKey='totext' title='ToText'>
+                    <ToText {...componentBag} />
+                    <ChunkToText {...componentBag} />
+                    <AreasToText {...componentBag} />
+                    <RectangleHelper {...componentBag} />
+                    <PatternToText {...componentBag} />
+                </Tab>
+                <Tab eventKey='forms' title='Forms'>
+                    <FormFill {...componentBag} />
+                    <GetFormFields {...componentBag} />
+                    <RectangleHelper {...componentBag} />
+                </Tab>
+                <Tab eventKey='group' title='Group'>
+                    <GroupPages {...componentBag} />
+                </Tab>
+                <Tab eventKey='helper' title='Helpers'>
+                    <DrawRectangles {...componentBag} />
+                    <GetPageDimensions {...componentBag} />
+                    <RectangleHelper {...componentBag} />
+                </Tab>
+            </Tabs>
         </div>
     );
 }

@@ -9,3 +9,4 @@ export * from './areas-to-text';
 export * from './rectangle-helper';
 export * from './group-pages';
 export * from './pattern-to-text';
+export * from './get-form-fields';
