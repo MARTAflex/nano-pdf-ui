@@ -16,6 +16,7 @@ export const FormFill = (ps) => {
         firstname: 'foo',
         lastname: 'bar',
     });
+    const [flatten, setFlatten] = useState(false);
 
     const sendRequest = async () => {
         client
@@ -24,7 +25,7 @@ export const FormFill = (ps) => {
                 {
                     pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
                     data: requestData,
-                    flatten: true,
+                    flatten,
                 },
                 {
                     responseType: 'blob',
@@ -39,9 +40,30 @@ export const FormFill = (ps) => {
             });
     };
 
+    const fetchFormFields = async () => {
+        client
+            .post(
+                '/get-form-fields',
+                {
+                    pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                },
+            )
+            .then((response) => {
+                var newFields = {};
+                for (const field of response?.data) {
+                    newFields[field.name] = ''
+                }
+                setRequestData(newFields);
+            })
+            .catch(async (err) => {
+                console.log(await err?.response?.data.text());
+            });
+    };
+
     var formBag = {
         requestData,
         setRequestData,
+        fetchFormFields,
     };
 
     const blobUrl = useMemo(() => (
@@ -55,6 +77,13 @@ export const FormFill = (ps) => {
             <Col xs={3}>
                 <h2>form-fill</h2>
                 <RequestForm {...formBag} />
+                <Form.Check
+                    className='mb-3 me-5'
+                    type='checkbox'
+                    value={flatten}
+                    onChange={() => setFlatten((prev) => !prev)}
+                    label='flatten'
+                />
                 <Button onClick={() => sendRequest()}>send request</Button>
                 <Button variant='danger' onClick={() => setResponseData('')}>
                     x
@@ -78,35 +107,54 @@ export const FormFill = (ps) => {
 };
 
 const RequestForm = (ps) => {
-    var { requestData, setRequestData } = ps;
+    var { requestData, setRequestData, fetchFormFields } = ps;
+
+    const [newKey, setNewKey] = useState(`key${Object.keys(requestData).length}`);
+
     return (
         <div className='mb-5'>
-            <Form.Group>
-                <Form.Label>firstname</Form.Label>
-                <Form.Control
-                    type='text'
-                    value={requestData.firstname}
-                    onChange={(next) =>
+            <Button
+                className='mb-3'
+                onClick={() => fetchFormFields()}
+            >
+                fetch from document (get-form-fields)
+            </Button>
+            <div className='d-flex'>
+                <Button
+                    onClick={(next) =>
                         setRequestData((prev) => ({
                             ...prev,
-                            firstname: next.target.value,
+                            [newKey]: 'foobar',
                         }))
                     }
-                />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>lastname</Form.Label>
+                >
+                    add Key
+                </Button>
                 <Form.Control
                     type='text'
-                    value={requestData.lastname}
+                    value={newKey}
                     onChange={(next) =>
-                        setRequestData((prev) => ({
-                            ...prev,
-                            lastname: next.target.value,
-                        }))
+                        setNewKey(next.target.value)
                     }
                 />
-            </Form.Group>
+            </div>
+
+            { Object.keys(requestData).map( key => (
+                <Form.Group>
+                    <Form.Label>{key}</Form.Label>
+                    <Form.Control
+                        type='text'
+                        as='textarea'
+                        value={requestData[key]}
+                        onChange={(next) =>
+                            setRequestData((prev) => ({
+                                ...prev,
+                                [key]: next.target.value,
+                            }))
+                        }
+                    />
+                </Form.Group>
+            ))}
         </div>
     );
 };
