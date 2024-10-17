@@ -15,6 +15,7 @@ import {
     GroupPages,
     PatternToText,
     GetFormFields,
+    SetFormFields,
 } from './components';
 import { Tab } from 'bootstrap';
 
@@ -55,6 +56,7 @@ function App() {
                 <Tab eventKey='forms' title='Forms'>
                     <FormFill {...componentBag} />
                     <GetFormFields {...componentBag} />
+                    <SetFormFields {...componentBag} />
                     <RectangleHelper {...componentBag} />
                 </Tab>
                 <Tab eventKey='group' title='Group'>
