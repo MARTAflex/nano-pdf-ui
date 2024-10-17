@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import testPdfs from '../assets/test-pdfs.json';
 import ejson from '@cdxoo/tiny-ejson';
+import { copyTextToClipboard } from './util';
 
 const client = axios.create({
     baseURL: '/nano-pdf',
@@ -11,7 +12,7 @@ const client = axios.create({
 
 export const GetFormFields = (ps) => {
     var { selectedPdf, uploadedPdf } = ps;
-    const [responseData, setResponseData] = useState({});
+    const [responseData, setResponseData] = useState(JSON.stringify(ejson({}), null, 4));
 
     const sendRequest = async () => {
         client
@@ -19,7 +20,7 @@ export const GetFormFields = (ps) => {
                 pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
             })
             .then((response) => {
-                setResponseData(response?.data);
+                setResponseData(JSON.stringify(ejson(response.data), null, 4));
             })
             .catch((err) => {
                 setResponseData(err);
@@ -39,8 +40,13 @@ export const GetFormFields = (ps) => {
             </Col>
             <Col xs={9}>
                 <h3>Response:</h3>
+                <Button
+                    onClick={ () => copyTextToClipboard(responseData)}
+                >
+                    Copy to Clipboard
+                </Button>
                 <div className='bg-light border p-3'>
-                    <pre>{JSON.stringify(ejson(responseData), null, 4)}</pre>
+                    <pre>{responseData}</pre>
                 </div>
             </Col>
         </Row>

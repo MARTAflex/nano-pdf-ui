@@ -140,7 +140,9 @@ const RequestForm = (ps) => {
             </div>
 
             { Object.keys(requestData).map( key => (
-                <Form.Group>
+                <Form.Group
+                    className='border p-2'
+                >
                     <Form.Label>{key}</Form.Label>
                     <Form.Control
                         type='text'
