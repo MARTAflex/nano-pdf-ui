@@ -15,13 +15,13 @@ export const SetFormFields = (ps) => {
     const [requestData, setRequestData] = useState({
         firstname: {
             'x': 111,
-            'y': 751.2,
+            'y': 102.5,
             'width': 125.399994,
             'height': 31,
             'page': 0,
             'type': 'text',
-            'font': 'Helvetica',
-            'fontColor': '0 g',
+            'fontWeight': 'normal',
+            'fontColor': 'black',
             'fontSize': '12',
             'quadding': '0',
         },
@@ -33,7 +33,7 @@ export const SetFormFields = (ps) => {
                 '/set-form-fields',
                 {
                     pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
-                    data: requestData,
+                    data: requestData
                 },
                 {
                     responseType: 'blob',
@@ -113,10 +113,10 @@ const RequestForm = (ps) => {
                                 'height': 30,
                                 'page': 0,
                                 'type': 'text',
-                                'font': 'Helvetica',
-                                'fontColor': '0 rg',
+                                'fontWeight': 'normal',
+                                'fontColor': 'black',
                                 'fontSize': '12',
-                                'quadding': '1',
+                                'quadding': '0',
                             },
                         }))
                     }}
@@ -148,7 +148,7 @@ const RequestForm = (ps) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Form.Group as={Col}>
+                        <Form.Group as={Col} className='mb-3'>
                             <Form.Label>x</Form.Label>
                             <Form.Control
                                 type='number'
@@ -217,20 +217,21 @@ const RequestForm = (ps) => {
                     </Row>
                     <Row>
                         <Form.Group as={Col}>
-                            <Form.Label>font</Form.Label>
+                            <Form.Label>fontWeight</Form.Label>
                             <Form.Select
-                                value={requestData[key].font}
+                                value={requestData[key].fontWeight}
                                 onChange={(next) =>
                                     setRequestData((prev) => ({
                                         ...prev,
                                         [key]: {
                                             ...prev[key],
-                                            font: next.target.value,
+                                            fontWeight: next.target.value,
                                         },
                                     }))
                                 }
                             >
-                                <option value="Helvetica">Helvetica</option>
+                                <option value='normal'>normal</option>
+                                <option value='bold'>bold</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group as={Col}>
@@ -265,8 +266,8 @@ const RequestForm = (ps) => {
                                     }))
                                 }
                             >
-                                <option value="0 rg">black</option>
-                                <option value="1 1 1 rg">white</option>
+                                <option value='0 rg'>black</option>
+                                <option value='1 1 1 rg'>white</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group as={Col}>
@@ -283,9 +284,9 @@ const RequestForm = (ps) => {
                                     }))
                                 }
                                 >
-                                <option value="0">left</option>
-                                <option value="1">center</option>
-                                <option value="2">right</option>
+                                <option value='0'>left</option>
+                                <option value='1'>center</option>
+                                <option value='2'>right</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group as={Col}>
