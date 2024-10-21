@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import testPdfs from '../assets/test-pdfs.json';
 import ejson from '@cdxoo/tiny-ejson';
+import { extractAppearance } from './util';
 
 const client = axios.create({
     baseURL: '/nano-pdf',
@@ -11,6 +12,7 @@ const client = axios.create({
 
 export const SetFormFields = (ps) => {
     var { selectedPdf, uploadedPdf } = ps;
+    const [parseErrors, setParseErrors] = useState([]);
     const [responseData, setResponseData] = useState('');
     const [requestData, setRequestData] = useState({
         firstname: {
@@ -48,10 +50,56 @@ export const SetFormFields = (ps) => {
             });
     };
 
+    const fetchFormFields = async () => {
+        client
+            .post(
+                '/get-form-fields',
+                {
+                    pdf: !!uploadedPdf ? uploadedPdf : testPdfs[selectedPdf], //pdf is expected to be encoded as base64
+                },
+            )
+            .then((response) => {
+                var newFields = {};
+
+                var errorFields = [];
+                
+                for (const [key, values] of Object.entries(response?.data)) {
+                    //TODO: 
+                    // decostruct defaultAppearance
+
+                    if (values['type'] !== 'text') {
+                        errorFields.push(key);
+                        continue;
+                    }
+
+                    var { fontWeight, fontSize, fontColor } = extractAppearance(values['defaultAppearance'])
+
+                    newFields[key] = {
+                        x: values['x'],
+                        y: values['y'],
+                        width: values['width'],
+                        height: values['height'],
+                        page: values['page'],
+                        type: values['type'],
+                        fontWeight,
+                        fontColor,
+                        fontSize,
+                        quadding: values['quadding'],
+                    }
+                }
+                setRequestData(newFields);
+                setParseErrors(errorFields);
+            })
+            .catch(async (err) => {
+                console.log(await err?.response?.data.text());
+            });
+    };
+
 
     var formBag = {
         requestData,
         setRequestData,
+        fetchFormFields,
     };
 
     const blobUrl = useMemo(() => (
@@ -72,6 +120,11 @@ export const SetFormFields = (ps) => {
             </Col>
             <Col xs={9}>
                 <h3>Response:</h3>
+                { parseErrors.length > 0 && (
+                    <div>
+                        Fields skip due to parseError: { parseErrors.toString() }
+                    </div>
+                )}
                 <div className='border p-3'>
                     {!blobUrl && (
                         <pre>
@@ -101,6 +154,12 @@ const RequestForm = (ps) => {
 
     return (
         <div className='mb-5'>
+            <Button
+                className='mb-3'
+                onClick={() => fetchFormFields()}
+            >
+                fetch from document (get-form-fields)
+            </Button>
             <div className='d-flex mb-3'>
                 <Button
                     onClick={(next) => {
