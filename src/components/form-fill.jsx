@@ -50,8 +50,9 @@ export const FormFill = (ps) => {
             )
             .then((response) => {
                 var newFields = {};
-                for (const field of response?.data) {
-                    newFields[field.name] = ''
+                
+                for (const key of Object.keys(response?.data)) {
+                    newFields[key] = ''
                 }
                 setRequestData(newFields);
             })
